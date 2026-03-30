@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+set -e
+
+# Load NVM so pnpm is available
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Skip merge commits
+if [ -f .git/MERGE_HEAD ]; then
+  echo "Merge detected. Skipping lint-staged."
+  exit 0
+fi
+
+# Use pnpm directly from NVM PATH
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "Error: pnpm not found. Make sure NVM is loaded and pnpm is installed."
+  exit 1
+fi
+
+pnpm lint-staged --verbose
