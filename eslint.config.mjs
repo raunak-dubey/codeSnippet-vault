@@ -61,4 +61,10 @@ export default tseslint.config(
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
+  {
+    files: ['packages/logger/**/*.{ts,js}'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 );

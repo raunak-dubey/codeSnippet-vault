@@ -10,6 +10,8 @@
     "declaration": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

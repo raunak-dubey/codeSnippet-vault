@@ -1,0 +1,23 @@
+import dotenv from 'dotenv';
+
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+function getEnv(key: keyof NodeJS.ProcessEnv, required = true): string {
+  const value = process.env[key];
+
+  if (required && !value) {
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+
+  return value as string;
+}
+
+export const env = {
+  NODE_ENV: getEnv('NODE_ENV'),
+  PORT: Number(getEnv('PORT')),
+  MONGO_URI: getEnv('MONGO_URI'),
+  JWT_SECRET: getEnv('JWT_SECRET'),
+  LOG_LEVEL: getEnv('LOG_LEVEL'),
+};
