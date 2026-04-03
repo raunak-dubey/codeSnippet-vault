@@ -1,6 +1,6 @@
-import app from './src/app.ts';
-import { env } from './src/config/env.ts';
-import logger from './src/config/logger.ts';
+import app from './src/app.js';
+import { env } from './src/config/env.js';
+import logger from './src/config/logger.js';
 
 const PORT = env.PORT;
 

@@ -1,23 +1,22 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.ts",
   "type": "module",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node server.ts",
+    "start": "node dist/server.js",
     "start:dev": "NODE_ENV=development tsx watch server.ts",
-    "build": "tsc && npm run prod",
-    "prod": "NODE_ENV=development node dist/server"
+    "build": "tsc -p tsconfig.build.json",
+    "prod": "NODE_ENV=production node dist/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Raunak Dubey",
   "license": "ISC",
-  "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@repo/logger": "workspace:*",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "mongoose": "^9.3.3",
     "pino": "^10.3.1",
     "pino-pretty": "^13.1.3"
   },

@@ -1,4 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": ".",
+    "declaration": true,
+    "sourceMap": true
+  },
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

@@ -4,18 +4,12 @@ import tseslint from 'typescript-eslint';
 import globals from 'globals';
 import prettier from 'eslint-plugin-prettier/recommended';
 
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export default tseslint.config(
   {
     ignores: [
       'node_modules/**',
       'dist/**',
-      'build',
+      'build/**',
       '**/*.test.ts',
       '**/*.spec.ts',
       '*.config.js',
@@ -28,15 +22,13 @@ export default tseslint.config(
   prettier,
   {
     languageOptions: {
-      parser: tseslint.parser,
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.node,
       },
       parserOptions: {
-        project: true,
-        tsconfigRootDir: __dirname,
+        projectService: true,
       },
     },
   },
