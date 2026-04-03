@@ -1,7 +1,7 @@
 import pino from 'pino';
 import path from 'node:path';
 import { createNodeLogger } from '@repo/logger';
-import { env } from './env.ts';
+import { env } from './env.js';
 
 const LOGS_DIR = path.join(process.cwd(), 'logs');
 

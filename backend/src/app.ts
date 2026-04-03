@@ -1,5 +1,5 @@
 import express, { type Express } from 'express';
-import { errorHandler } from './middlewares/errorHandler.middleware.ts';
+import { errorHandler } from './middlewares/errorHandler.middleware.js';
 
 const app: Express = express();
 

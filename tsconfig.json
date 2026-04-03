@@ -1,25 +1,7 @@
 {
-  "compilerOptions": {
-    "target": "ES2023",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "isolatedModules": true,
-    "declaration": true,
-    "removeComments": true,
-    "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "outDir": "./dist",
-    "resolveJsonModule": true,
-    "sourceMap": true
-  },
-  "exclude": ["node_modules", "dist", "build", "frontend/node_modules", "backend/node_modules"]
+  "files": [],
+  "references": [
+    { "path": "./packages/logger" },
+    { "path": "./backend/tsconfig.build.json" }
+  ]
 }
