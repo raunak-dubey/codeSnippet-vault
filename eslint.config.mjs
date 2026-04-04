@@ -54,7 +54,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/logger/**/*.{ts,js}'],
+    files: ['packages/logger/**/*.{ts,js}', 'packages/shared/**/*.{ts,js}'],
     rules: {
       'no-console': 'off',
     },
