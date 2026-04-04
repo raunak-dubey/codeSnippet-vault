@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { NotFoundError } from '../utils/AppError.js';
 
 dotenv.config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -8,7 +9,7 @@ function getEnv(key: keyof NodeJS.ProcessEnv, required = true): string {
   const value = process.env[key];
 
   if (required && !value) {
-    throw new Error(`Missing environment variable: ${key}`);
+    throw new NotFoundError(`Missing environment variable: ${key}`);
   }
 
   return value as string;
