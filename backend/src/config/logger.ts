@@ -40,7 +40,10 @@ const transport = isDev
           // Errors only — separate file for quick triage
           target: 'pino/file',
           level: 'error',
-          options: { destination: path.join(LOGS_DIR, 'error.log'), mkdir: true },
+          options: {
+            destination: path.join(LOGS_DIR, 'error.log'),
+            mkdir: true,
+          },
         },
       ],
     });

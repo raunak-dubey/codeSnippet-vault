@@ -21,4 +21,10 @@ export const env = {
   MONGO_URI: getEnv('MONGO_URI'),
   JWT_SECRET: getEnv('JWT_SECRET'),
   LOG_LEVEL: getEnv('LOG_LEVEL'),
+  MAIL_HOST: getEnv('MAIL_HOST'),
+  MAIL_PORT: getEnv('MAIL_PORT'),
+  MAIL_USER: getEnv('MAIL_USER'),
+  MAIL_PASS: getEnv('MAIL_PASS'),
+  EMAIL_FROM: getEnv('EMAIL_FROM'),
+  APP_URL: getEnv('APP_URL'),
 };

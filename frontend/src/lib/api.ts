@@ -5,7 +5,10 @@ type ApiErrorShape = {
   [key: string]: unknown;
 };
 
-export async function apiFetch<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
+export async function apiFetch<T>(
+  input: RequestInfo,
+  init?: RequestInit,
+): Promise<T> {
   try {
     const res = await fetch(input, init);
 

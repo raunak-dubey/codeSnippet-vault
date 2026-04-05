@@ -28,7 +28,12 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        projectService: true,
+        project: [
+          './backend/tsconfig.json',
+          './packages/logger/tsconfig.json',
+          './packages/shared/tsconfig.json',
+          './frontend/tsconfig.json',
+        ],
       },
     },
   },
@@ -40,11 +45,17 @@ export default tseslint.config(
       'dot-notation': 'error',
       'no-debugger': 'warn',
 
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        { checksVoidReturn: false },
+      ],
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/promise-function-async': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
