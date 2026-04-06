@@ -1,24 +1,62 @@
 import { Request, Response, NextFunction } from 'express';
 import logger from '../config/logger.js';
 import { AppError } from '../utils/AppError.js';
+import { ZodError } from '@repo/shared';
 
 export const errorHandler = (
-  err: Error | AppError,
+  err: unknown,
   req: Request,
   res: Response,
   _next: NextFunction,
 ) => {
-  const statusCode = err instanceof AppError ? err.statusCode : 500;
+  if (err instanceof ZodError) {
+    res.status(400).json({
+      success: false,
+      message: 'Validation failed.',
+      errors: err.issues.map((e) => ({
+        field: e.path.join('.'),
+        message: e.message,
+      })),
+    });
+    return;
+  }
 
-  logger.error('Error occurred', {
-    message: err.message,
-    stack: err.stack,
+  if (err instanceof AppError) {
+    logger.error('AppError occurred', {
+      message: err.message,
+      stack: err.stack,
+      path: req.originalUrl,
+      method: req.method,
+    });
+
+    return res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+    });
+  }
+
+  if (err instanceof Error) {
+    logger.error('Unknown error occurred', {
+      message: err.message,
+      stack: err.stack,
+      path: req.originalUrl,
+      method: req.method,
+    });
+
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+
+  logger.error('Non-error thrown', {
+    error: err,
     path: req.originalUrl,
     method: req.method,
   });
 
-  res.status(statusCode).json({
+  return res.status(500).json({
     success: false,
-    message: err instanceof AppError ? err.message : 'Internal Server Error',
+    message: 'Internal Server Error',
   });
 };
