@@ -1,6 +1,6 @@
 import { Schema, model, Document, HydratedDocument } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { USERNAME_REGEX, EMAIL_REGEX, PASSWORD_REGEX } from '@repo/shared';
+import { USERNAME_REGEX, EMAIL_REGEX } from '@repo/shared';
 
 // ---- Constants ----------------------------------------
 const SALT_ROUNDS = 12;
@@ -25,7 +25,6 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Username is required.'],
       trim: true,
-      lowercase: true,
       match: [
         USERNAME_REGEX,
         'Username must be 3-30 characters and only contain letters, numbers and underscores.',
@@ -35,17 +34,12 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, 'Email is required.'],
       trim: true,
-      lowercase: true,
       match: [EMAIL_REGEX, 'Email must be a valid email.'],
     },
     passwordHash: {
       type: String,
       required: [true, 'Password is required.'],
       select: false,
-      match: [
-        PASSWORD_REGEX,
-        'Password must be at least 8 characters, one uppercase, one lowercase, one number and one special character.',
-      ],
     },
     role: {
       type: String,

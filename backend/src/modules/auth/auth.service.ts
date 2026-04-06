@@ -1,13 +1,13 @@
+import { RegisterInput } from '@repo/shared';
 import { ConflictError } from '../../utils/AppError.js';
 import { emailService } from '../mail/mail.service.js';
 import { tokenService } from '../token/token.service.js';
 import { userService } from '../user/user.service.js';
-import { RegisterUserDto } from './dto/registerUser.dto.js';
 
 export const authService = {
   // ------ Register user -----------------------
-  async registerUser(registerUserDto: RegisterUserDto) {
-    const { username, email, passwordHash } = registerUserDto;
+  async registerUser(data: RegisterInput) {
+    const { username, email, password } = data;
 
     const existingUser = await userService.findByEmailOrUsername(
       email,
@@ -24,7 +24,7 @@ export const authService = {
     const user = await userService.createUser({
       username,
       email,
-      passwordHash,
+      passwordHash: password,
     });
 
     const { rawValue } = await tokenService.generateEmailVerificationToken(

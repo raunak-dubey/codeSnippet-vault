@@ -8,8 +8,8 @@ export default tseslint.config(
   {
     ignores: [
       'node_modules/**',
-      'dist/**',
-      'build/**',
+      '**/dist/**',
+      '**/build/**',
       '**/*.test.ts',
       '**/*.spec.ts',
       '*.config.js',

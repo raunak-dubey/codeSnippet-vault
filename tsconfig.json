@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./packages/logger" },
+    { "path": "./packages/shared" },
     { "path": "./backend/tsconfig.build.json" }
   ]
 }
