@@ -20,6 +20,24 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.query.token;
+
+  if (!token || typeof token !== 'string') {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid token',
+    });
+    return;
+  }
+
+  const result = await authService.verifyEmail(token);
+  res.status(201).json({
+    success: true,
+    data: result,
+  });
+});
+
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const body: unknown = req.body;
   const data: LoginInput = loginUserSchema.parse(body);
