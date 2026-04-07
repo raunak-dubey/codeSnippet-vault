@@ -36,7 +36,7 @@ const buildVerificationEmail = (token: string): EmailTemplate => {
           Verify Email
         </a>
         <p>Note: This link expires in 1 hour.</p>
-        <p>If you did not create an accout, please ignore this email.</p>'
+        <p>If you did not create an accout, please ignore this email.</p>
         <p>Best Regards,<br />
         The Code Snippet Vault Team</p>
       </div>
@@ -62,7 +62,9 @@ export const emailService: EmailService = {
     await transporter.sendMail(mailOptions);
 
     if (env.NODE_ENV !== 'production') {
-      logger.info(`Verify URL: ${env.APP_URL}/verify-email?token=${token}`);
+      logger.info(
+        `Verify URL: ${env.APP_URL}/auth/verify-email?token=${token}`,
+      );
     }
   },
 };

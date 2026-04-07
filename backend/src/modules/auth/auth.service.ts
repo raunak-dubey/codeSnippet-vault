@@ -4,6 +4,7 @@ import { emailService } from '../mail/mail.service.js';
 import { tokenService } from '../token/token.service.js';
 import { userService } from '../user/user.service.js';
 import { sessionService } from '../session/session.service.js';
+import { TokenType } from '../token/token.model.js';
 
 export const authService = {
   // ------ Register user -----------------------
@@ -35,6 +36,33 @@ export const authService = {
     await emailService.sendVerificationEmail(email, rawValue);
     return {
       message: 'Verification email sent successfully.',
+    };
+  },
+
+  // ------ Verify email -----------------------
+  async verifyEmail(token: string) {
+    const tokenDoc = await tokenService.findValidToken(
+      token,
+      TokenType.EMAIL_VERIFICATION,
+    );
+
+    if (!tokenDoc) throw new UnauthorizedError('Invalid or expired token.');
+
+    const user = await userService.findById(tokenDoc.userId);
+    if (!user) throw new UnauthorizedError('Invalid Credentials.');
+
+    if (user.isEmailVerified) {
+      return { message: 'Email already verified.' };
+    }
+
+    user.isEmailVerified = true;
+    user.emailVerifiedAt = new Date();
+    await user.save();
+
+    await tokenService.markUsed(tokenDoc);
+
+    return {
+      message: 'Email verified successfully.',
     };
   },
 
