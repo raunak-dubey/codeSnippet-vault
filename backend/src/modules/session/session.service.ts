@@ -43,9 +43,6 @@ export const sessionService = {
     meta: SessionMeta,
   ): Promise<{ rawRefreshToken: string; session: SessionDocument }> {
     const oldSession = await this.validateRefreshToken(rawToken);
-    if (!oldSession) {
-      throw new UnauthorizedError('Session expired. Please log in again.');
-    }
 
     await oldSession.revoke();
 

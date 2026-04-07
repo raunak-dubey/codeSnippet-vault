@@ -12,7 +12,13 @@ import { userService } from '../user/user.service.js';
 import { UnauthorizedError } from '../../utils/AppError.js';
 import { AuthRequest } from '../../middlewares/auth.middleware.js';
 
-// ? Register user
+export interface CookieRequest extends Request {
+  cookies: {
+    refreshToken?: string;
+  };
+}
+
+// ------ Register user -----------------------
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const body: unknown = req.body;
   const data: RegisterInput = registerUserSchema.parse(body);
@@ -24,7 +30,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-// ? Verify email
+// ------ Verify email -----------------------
 export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   const token = req.query.token;
 
@@ -43,7 +49,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-// ? Login user
+// ------ Login user -----------------------
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const body: unknown = req.body;
   const data: LoginInput = loginUserSchema.parse(body);
@@ -68,7 +74,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-// ? Get user
+// ------ Get user -----------------------
 export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!req.userId) {
     throw new UnauthorizedError('Unauthorized');
@@ -82,3 +88,37 @@ export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
     data: user,
   });
 });
+
+// ------ Refresh token -----------------------
+export const refresh = asyncHandler(
+  async (req: CookieRequest, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      throw new UnauthorizedError('Unauthorized');
+    }
+
+    const { accessToken, rawRefreshToken } = await authService.refreshToken(
+      refreshToken,
+      {
+        userAgent: req.headers['user-agent'],
+      },
+    );
+
+    // set new refresh token cookie
+    res.cookie('refreshToken', rawRefreshToken, {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      path: '/auth/refresh',
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        accessToken,
+      },
+    });
+  },
+);
