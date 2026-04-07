@@ -48,7 +48,7 @@ export const authService = {
 
     if (!tokenDoc) throw new UnauthorizedError('Invalid or expired token.');
 
-    const user = await userService.findById(tokenDoc.userId);
+    const user = await userService.findById(tokenDoc.userId.toString());
     if (!user) throw new UnauthorizedError('Invalid Credentials.');
 
     if (user.isEmailVerified) {
@@ -85,6 +85,19 @@ export const authService = {
       meta,
     );
     const accessToken = tokenService.generateAccessToken(user._id);
+
+    return {
+      accessToken,
+      rawRefreshToken,
+    };
+  },
+
+  // ------ Refresh token -----------------------
+  async refreshToken(rawToken: string, meta: { userAgent?: string }) {
+    const { session, rawRefreshToken } =
+      await sessionService.rotateRefreshToken(rawToken, meta);
+
+    const accessToken = tokenService.generateAccessToken(session.userId);
 
     return {
       accessToken,
