@@ -8,7 +8,11 @@ import {
   LoginInput,
 } from '@repo/shared';
 import { env } from '../../config/env.js';
+import { userService } from '../user/user.service.js';
+import { UnauthorizedError } from '../../utils/AppError.js';
+import { AuthRequest } from '../../middlewares/auth.middleware.js';
 
+// ? Register user
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const body: unknown = req.body;
   const data: RegisterInput = registerUserSchema.parse(body);
@@ -20,6 +24,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// ? Verify email
 export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   const token = req.query.token;
 
@@ -38,6 +43,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// ? Login user
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const body: unknown = req.body;
   const data: LoginInput = loginUserSchema.parse(body);
@@ -59,5 +65,20 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     data: {
       accessToken,
     },
+  });
+});
+
+// ? Get user
+export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
+  if (!req.userId) {
+    throw new UnauthorizedError('Unauthorized');
+  }
+
+  const user = await userService.findById(req.userId);
+  if (!user) throw new UnauthorizedError('Invalid Credentials.');
+
+  res.status(200).json({
+    success: true,
+    data: user,
   });
 });
