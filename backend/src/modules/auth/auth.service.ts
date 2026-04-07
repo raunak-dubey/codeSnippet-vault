@@ -1,8 +1,9 @@
-import { RegisterInput } from '@repo/shared';
-import { ConflictError } from '../../utils/AppError.js';
+import { LoginInput, RegisterInput } from '@repo/shared';
+import { ConflictError, UnauthorizedError } from '../../utils/AppError.js';
 import { emailService } from '../mail/mail.service.js';
 import { tokenService } from '../token/token.service.js';
 import { userService } from '../user/user.service.js';
+import { sessionService } from '../session/session.service.js';
 
 export const authService = {
   // ------ Register user -----------------------
@@ -28,12 +29,38 @@ export const authService = {
     });
 
     const { rawValue } = await tokenService.generateEmailVerificationToken(
-      user.id,
+      user._id,
     );
 
     await emailService.sendVerificationEmail(email, rawValue);
     return {
       message: 'Verification email sent successfully.',
+    };
+  },
+
+  // ------ Login user -----------------------
+  async loginUser(data: LoginInput, meta: { userAgent?: string }) {
+    const { email, password } = data;
+
+    const user = await userService.findUserByEmail(email);
+    if (!user) throw new UnauthorizedError('Invalid Credentials.');
+
+    const isPasswordCorrect = await user.comparePassword(password);
+    if (!isPasswordCorrect) throw new UnauthorizedError('Invalid Credentials.');
+
+    if (!user.isEmailVerified) {
+      throw new UnauthorizedError('Please verify your email first.');
+    }
+
+    const { rawRefreshToken } = await sessionService.createSession(
+      user._id,
+      meta,
+    );
+    const accessToken = tokenService.generateAccessToken(user._id);
+
+    return {
+      accessToken,
+      rawRefreshToken,
     };
   },
 };
