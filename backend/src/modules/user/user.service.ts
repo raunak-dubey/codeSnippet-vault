@@ -16,9 +16,9 @@ export const userService = {
     return userModel.create(data);
   },
 
-  async verifyEmail(userId: Types.ObjectId) {
+  async verifyEmail(userId: string) {
     return userModel.findByIdAndUpdate(
-      userId,
+      new Types.ObjectId(userId),
       {
         isEmailVerified: true,
         emailVerifiedAt: new Date(),
@@ -27,7 +27,7 @@ export const userService = {
     );
   },
 
-  async findById(userId: Types.ObjectId) {
-    return userModel.findById(userId);
+  async findById(userId: string) {
+    return userModel.findById(new Types.ObjectId(userId));
   },
 };
