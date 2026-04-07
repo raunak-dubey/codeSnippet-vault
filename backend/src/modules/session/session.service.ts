@@ -1,15 +1,14 @@
 import { Types } from 'mongoose';
 import sessionModel, { SessionDocument } from './session.model.js';
+import { UnauthorizedError } from '../../utils/AppError.js';
 
 type SessionMeta = {
   userAgent?: string;
 };
 
 export const sessionService = {
-  async createSession(userId: string, meta: SessionMeta) {
-    const ObjectId = new Types.ObjectId(userId);
-
-    return sessionModel.createSession(ObjectId, meta);
+  async createSession(userId: Types.ObjectId, meta: SessionMeta) {
+    return sessionModel.createSession(userId, meta);
   },
 
   async findByRefreshToken(rawToken: string): Promise<SessionDocument | null> {
@@ -20,13 +19,36 @@ export const sessionService = {
     return session.revoke();
   },
 
-  async revokeAll(userId: string) {
-    const ObjectId = new Types.ObjectId(userId);
-    return sessionModel.revokeAll(ObjectId);
+  async revokeAll(userId: Types.ObjectId) {
+    return sessionModel.revokeAll(userId);
   },
 
-  async getUserSessions(userId: string) {
-    const ObjectId = new Types.ObjectId(userId);
-    return sessionModel.getActiveSessions(ObjectId);
+  async getUserSessions(userId: Types.ObjectId) {
+    return sessionModel.getActiveSessions(userId);
+  },
+
+  async validateRefreshToken(rawToken: string): Promise<SessionDocument> {
+    const session = await sessionModel.findByRawToken(rawToken);
+
+    if (!session || !session.isValid()) {
+      throw new UnauthorizedError('Session expired. Please log in again.');
+    }
+
+    return session;
+  },
+
+  // ? Revoke old sessions and issues new one.
+  async rotateRefreshToken(
+    rawToken: string,
+    meta: SessionMeta,
+  ): Promise<{ rawRefreshToken: string; session: SessionDocument }> {
+    const oldSession = await this.validateRefreshToken(rawToken);
+    if (!oldSession) {
+      throw new UnauthorizedError('Session expired. Please log in again.');
+    }
+
+    await oldSession.revoke();
+
+    return sessionModel.createSession(oldSession.userId, meta);
   },
 };

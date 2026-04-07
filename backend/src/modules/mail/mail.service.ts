@@ -23,8 +23,8 @@ const buildVerificationEmail = (token: string): EmailTemplate => {
     subject: 'Verify your email',
     html: `
       <div style="font-family:sans-serif">
-        <h2>Verify your email</h2>
-        <p>Click the button below to verify your account:</p>
+        <p>Welcome! We are glad to have you on board.</p>
+        <p>Please verify your email by clicking the link below:</p>
         <a href="${url}" style="
           display:inline-block;
           padding:10px 20px;
@@ -35,7 +35,10 @@ const buildVerificationEmail = (token: string): EmailTemplate => {
         ">
           Verify Email
         </a>
-        <p>If you didn’t create this account, ignore this.</p>
+        <p>Note: This link expires in 1 hour.</p>
+        <p>If you did not create an accout, please ignore this email.</p>'
+        <p>Best Regards,<br />
+        The Code Snippet Vault Team</p>
       </div>
     `,
   };

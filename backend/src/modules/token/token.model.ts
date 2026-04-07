@@ -10,7 +10,7 @@ export enum TokenType {
 
 // ─── Expiry ─────────────────────────────────────────────
 const TOKEN_EXPIRY_MS: Record<TokenType, number> = {
-  [TokenType.EMAIL_VERIFICATION]: 12 * 60 * 60 * 1000,
+  [TokenType.EMAIL_VERIFICATION]: 60 * 60 * 1000,
   [TokenType.PASSWORD_RESET]: 15 * 60 * 1000,
 };
 
@@ -125,5 +125,5 @@ tokenSchema.statics.findByRawValue = function (
 };
 
 // ─── Model ──────────────────────────────────────────────
-const Token = mongoose.model<IToken, ITokenStatics>('Token', tokenSchema);
-export default Token;
+const tokenModel = mongoose.model<IToken, ITokenStatics>('Token', tokenSchema);
+export default tokenModel;

@@ -1,17 +1,36 @@
 import { Types } from 'mongoose';
-import Token, { TokenDocument, TokenType } from './token.model.js';
+import tokenModel, { TokenDocument, TokenType } from './token.model.js';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { env } from '../../config/env.js';
+
+const ACCESS_TOKEN_EXPIRY = '15m';
 
 export const tokenService = {
-  async generateEmailVerificationToken(userId: string) {
-    const ObjectId = new Types.ObjectId(userId);
-    return Token.generateToken(ObjectId, TokenType.EMAIL_VERIFICATION);
+  async generateEmailVerificationToken(userId: Types.ObjectId) {
+    return tokenModel.generateToken(userId, TokenType.EMAIL_VERIFICATION);
+  },
+
+  generateAccessToken(userId: Types.ObjectId): string {
+    return jwt.sign({ sub: userId.toString() }, env.JWT_SECRET, {
+      expiresIn: ACCESS_TOKEN_EXPIRY,
+    });
+  },
+
+  verifyAccessToken(rawToken: string): JwtPayload {
+    const decoded = jwt.verify(rawToken, env.JWT_SECRET);
+
+    if (typeof decoded === 'string') {
+      throw new Error('Invalid token.');
+    }
+
+    return decoded;
   },
 
   async findValidToken(
     rawToken: string,
     type: TokenType,
   ): Promise<TokenDocument | null> {
-    const tokenDoc = await Token.findByRawValue(rawToken, type);
+    const tokenDoc = await tokenModel.findByRawValue(rawToken, type);
 
     if (!tokenDoc || !tokenDoc.isValid()) return null;
     return tokenDoc;

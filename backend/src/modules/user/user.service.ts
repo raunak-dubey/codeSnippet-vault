@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import userModel, { IUser } from './user.model.js';
 
 export const userService = {
@@ -8,14 +9,14 @@ export const userService = {
   },
 
   async findUserByEmail(email: string) {
-    return await userModel.findOne({ email });
+    return await userModel.findOne({ email }).select('+passwordHash');
   },
 
   async createUser(data: Partial<IUser>) {
     return userModel.create(data);
   },
 
-  async verifyEmail(userId: string) {
+  async verifyEmail(userId: Types.ObjectId) {
     return userModel.findByIdAndUpdate(
       userId,
       {
@@ -26,7 +27,7 @@ export const userService = {
     );
   },
 
-  async findById(userId: string) {
+  async findById(userId: Types.ObjectId) {
     return userModel.findById(userId);
   },
 };
