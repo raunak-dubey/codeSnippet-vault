@@ -20,8 +20,7 @@ export interface CookieRequest extends Request {
 
 // ------ Register user -----------------------
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const body: unknown = req.body;
-  const data: RegisterInput = registerUserSchema.parse(body);
+  const data: RegisterInput = registerUserSchema.parse(req.body);
 
   const result = await authService.registerUser(data);
   res.status(201).json({
@@ -51,8 +50,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
 
 // ------ Login user -----------------------
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  const body: unknown = req.body;
-  const data: LoginInput = loginUserSchema.parse(body);
+  const data: LoginInput = loginUserSchema.parse(req.body);
 
   const { accessToken, rawRefreshToken } = await authService.loginUser(data, {
     userAgent: req.headers['user-agent'],
