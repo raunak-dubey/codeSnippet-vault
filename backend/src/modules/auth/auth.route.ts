@@ -5,6 +5,7 @@ import {
   verifyEmail,
   getMe,
   refresh,
+  logout,
 } from './auth.controller.js';
 import authMiddleware from '../../middlewares/auth.middleware.js';
 
@@ -19,5 +20,7 @@ authRouter.post('/login', login);
 authRouter.get('/get-me', authMiddleware, getMe);
 
 authRouter.post('/refresh', refresh);
+
+authRouter.post('/logout', logout);
 
 export default authRouter;

@@ -1,6 +1,6 @@
 import { queryKeys } from '@/shared/lib/queryKeys';
 import { useQuery } from '@tanstack/react-query';
-import { getMe } from '../services/auth.api';
+import { getMe } from '../api/auth.api';
 
 export const useMe = () => {
   return useQuery({
