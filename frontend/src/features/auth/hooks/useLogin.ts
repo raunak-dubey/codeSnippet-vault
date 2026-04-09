@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../services/auth.api';
+import { login } from '../api/auth.api';
 import { setAccessToken } from '@/shared/lib/api';
 import { useRouter } from 'next/navigation';
 

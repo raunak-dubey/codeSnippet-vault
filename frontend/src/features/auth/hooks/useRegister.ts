@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { setAccessToken } from '@/shared/lib/api';
-import { register } from '../services/auth.api';
+import { register } from '../api/auth.api';
 import { useRouter } from 'next/navigation';
 
 export const useRegister = () => {

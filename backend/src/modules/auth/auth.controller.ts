@@ -11,6 +11,7 @@ import { env } from '../../config/env.js';
 import { userService } from '../user/user.service.js';
 import { UnauthorizedError } from '../../utils/AppError.js';
 import { AuthRequest } from '../../middlewares/auth.middleware.js';
+import { sessionService } from '../session/session.service.js';
 
 export interface CookieRequest extends Request {
   cookies: {
@@ -117,6 +118,33 @@ export const refresh = asyncHandler(
       data: {
         accessToken,
       },
+    });
+  },
+);
+
+// ------ Logout user -----------------------
+export const logout = asyncHandler(
+  async (req: CookieRequest, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      throw new UnauthorizedError('Unauthorized');
+    }
+
+    // revoke session
+    const session = await sessionService.validateRefreshToken(refreshToken);
+    if (session) await sessionService.revokeSession(session);
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/auth/refresh',
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Logged Out Successfully.',
     });
   },
 );

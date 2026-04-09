@@ -11,26 +11,7 @@ import {
 import Link from 'next/link';
 import { FormField } from './FormField';
 import { useState } from 'react';
-
-type LoginProps = {
-  type: 'login';
-  onSubmit: (data: LoginInput) => Promise<void>;
-  isLoading?: boolean;
-};
-
-type RegisterProps = {
-  type: 'register';
-  onSubmit: (data: RegisterInput) => Promise<void>;
-  isLoading?: boolean;
-};
-
-type Props = LoginProps | RegisterProps;
-
-type FormValues = {
-  email: string;
-  password: string;
-  username?: string;
-};
+import { Props, FormValues } from '../types/index';
 
 const inputClass =
   'bg-[#0e141c] text-white px-3 py-2 rounded-md outline-none focus:ring-2 focus:ring-[#acc7ff]';
