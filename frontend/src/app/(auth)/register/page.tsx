@@ -1,12 +1,16 @@
 'use client';
 import { AuthForm } from '@/features/auth/components/AuthForm';
-import { register } from '@/features/auth/services/auth.api';
+import { useRegister } from '@/features/auth/hooks/useRegister';
 import { RegisterInput } from '@repo/shared';
 
 export default function Register() {
+  const { mutateAsync, isPending } = useRegister();
+
   const handleRegister = async (data: RegisterInput) => {
-    await register(data);
+    await mutateAsync(data);
   };
 
-  return <AuthForm type="register" onSubmit={handleRegister} />;
+  return (
+    <AuthForm type="register" onSubmit={handleRegister} isLoading={isPending} />
+  );
 }

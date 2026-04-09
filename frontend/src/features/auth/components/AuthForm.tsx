@@ -15,11 +15,13 @@ import { useState } from 'react';
 type LoginProps = {
   type: 'login';
   onSubmit: (data: LoginInput) => Promise<void>;
+  isLoading?: boolean;
 };
 
 type RegisterProps = {
   type: 'register';
   onSubmit: (data: RegisterInput) => Promise<void>;
+  isLoading?: boolean;
 };
 
 type Props = LoginProps | RegisterProps;
@@ -33,7 +35,7 @@ type FormValues = {
 const inputClass =
   'bg-[#0e141c] text-white px-3 py-2 rounded-md outline-none focus:ring-2 focus:ring-[#acc7ff]';
 
-export const AuthForm = ({ type, onSubmit }: Props) => {
+export const AuthForm = ({ type, onSubmit, isLoading }: Props) => {
   const isRegister = type === 'register';
 
   const schema = isRegister ? registerUserSchema : loginUserSchema;
@@ -106,10 +108,14 @@ export const AuthForm = ({ type, onSubmit }: Props) => {
       )}
 
       <button
-        disabled={isSubmitting}
+        disabled={isSubmitting || isLoading}
         className="w-full bg-[#acc7ff] font-semibold text-black py-2 rounded-md"
       >
-        {isSubmitting ? 'Loading...' : isRegister ? 'Register' : 'Login'}
+        {isSubmitting || isLoading
+          ? 'Loading...'
+          : isRegister
+            ? 'Register'
+            : 'Login'}
       </button>
 
       {backendError && <p className="text-sm text-red-400">{backendError}</p>}

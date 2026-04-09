@@ -8,6 +8,16 @@ type AuthResponse = {
   };
 };
 
+type MeResponse = {
+  success: boolean;
+  data: {
+    userId: string;
+    username: string;
+    email: string;
+    role: 'user' | 'admin';
+  };
+};
+
 export const login = async (data: LoginInput) => {
   const res = await api.post<AuthResponse>('/auth/login', data);
   return res.data;
@@ -15,5 +25,10 @@ export const login = async (data: LoginInput) => {
 
 export const register = async (data: RegisterInput) => {
   const res = await api.post<AuthResponse>('/auth/register', data);
+  return res.data;
+};
+
+export const getMe = async () => {
+  const res = await api.get<MeResponse>('/auth/me');
   return res.data;
 };
