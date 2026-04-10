@@ -27,4 +27,5 @@ export const env = {
   MAIL_PASS: getEnv('MAIL_PASS'),
   EMAIL_FROM: getEnv('EMAIL_FROM'),
   APP_URL: getEnv('APP_URL'),
+  FRONTEND_URL: getEnv('FRONTEND_URL'),
 };

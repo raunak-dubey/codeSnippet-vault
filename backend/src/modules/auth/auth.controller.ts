@@ -31,23 +31,25 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // ------ Verify email -----------------------
-export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
-  const token = req.query.token;
+export const verifyEmail = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const token = req.query.token;
 
-  if (!token || typeof token !== 'string') {
-    res.status(400).json({
-      success: false,
-      message: 'Invalid token',
-    });
-    return;
-  }
+    if (!token || typeof token !== 'string') {
+      return res.redirect(`${env.FRONTEND_URL}/login?error=invalid_token`);
+    }
 
-  const result = await authService.verifyEmail(token);
-  res.status(201).json({
-    success: true,
-    data: result,
-  });
-});
+    try {
+      await authService.verifyEmail(token);
+
+      return res.redirect(`${env.FRONTEND_URL}/login?verified=true`);
+    } catch {
+      return res.redirect(
+        `${env.FRONTEND_URL}/login?error=verification_failed`,
+      );
+    }
+  },
+);
 
 // ------ Login user -----------------------
 export const login = asyncHandler(async (req: Request, res: Response) => {

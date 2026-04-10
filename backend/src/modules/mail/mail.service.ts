@@ -17,7 +17,7 @@ type EmailTemplate = {
 };
 
 const buildVerificationEmail = (token: string): EmailTemplate => {
-  const url = `${env.APP_URL}/verify-email?token=${token}`;
+  const url = `${env.APP_URL}/auth/verify-email?token=${token}`;
 
   return {
     subject: 'Verify your email',
