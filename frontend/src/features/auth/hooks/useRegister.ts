@@ -10,7 +10,7 @@ export const useRegister = () => {
 
     onSuccess: ({ data }) => {
       setAccessToken(data.accessToken);
-      void router.replace('/');
+      void router.replace('/verify-email');
     },
   });
 };

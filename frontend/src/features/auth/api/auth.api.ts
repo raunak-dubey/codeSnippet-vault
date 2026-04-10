@@ -13,7 +13,7 @@ export const register = async (data: RegisterInput) => {
 };
 
 export const getMe = async () => {
-  const res = await api.get<MeResponse>('/auth/me');
+  const res = await api.get<MeResponse>('/auth/get-me');
   return res.data;
 };
 
