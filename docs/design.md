@@ -1,103 +1,72 @@
-# 📦 Code Snippet Vault — Final Design Specification (MVP)
+# UI/UX Design System — Code Snippet Vault
 
-# 🧭 1. Product Overview
+## 1. Design Intent
 
-**Code Snippet Vault** is a minimal, high-speed developer tool for storing and retrieving reusable code snippets.
+The product is designed as a **high-speed developer utility** focused on one primary action:
 
-This product is **not a SaaS dashboard**.
-It is a **focused utility tool** optimized for:
+> Quickly find and copy code.
 
-* ⚡ Fast retrieval (<5 seconds)
-* ⚡ Fast creation (<15 seconds)
-* 🧠 Low cognitive load
-* 🧑‍💻 Developer-first workflows
+All design decisions must optimize for:
 
-# 🎯 2. Design Philosophy
+* Fast retrieval (<5 seconds)
+* Instant copy interaction (1 click)
+* Minimal cognitive load
 
-## Core Principles
+## 2. Design Philosophy
 
-* **Speed over aesthetics**
-* **Clarity over features**
-* **Density over whitespace**
-* **Function over decoration**
+### Core Principles
 
-## UX Rules
+* Speed over aesthetics
+* Clarity over features
+* Function over decoration
+* Consistency over creativity
 
-* Everything must be accessible within **1–2 actions**
+---
+
+### UX Rules
+
+* Primary action must always be visible (Copy)
+* Everything accessible within 1–2 actions
 * No unnecessary navigation layers
-* No “dashboard-style” complexity
-* Prioritize keyboard-first interactions (future-ready)
+* Avoid context switching
 
-## Product Identity
+## 3. Layout System
 
-Inspired by:
-
-* Raycast → speed & focus
-* GitHub Gist → simplicity
-* Linear → clean precision
-
-# 🗺️ 3. Application Structure (Final Sitemap)
+### 3.0 Dashboard Layout
 
 ```
-/auth
-  ├── login
-  └── register
-
-/dashboard (single primary screen)
-  ├── snippet list
-  ├── editor
-  └── create modal
-
-/settings (minimal)
-
-/logout
+[ Snippet List ] [ Editor ]
 ```
 
-# 🧱 4. Core Layout (Main Application)
+---
 
-## 🧑‍💻 Dashboard = Single Workspace
+### Layout Intent
 
-### Layout Structure
+* Snippet List = **primary (discovery + selection)**
+* Editor = **secondary (view + edit)**
 
-```
-[ Sidebar ] [ Snippet List ] [ Editor ]
-```
+This layout prioritizes **scan → select → copy workflow**.
 
-## 📌 4.1 Sidebar (Left — Minimal)
+---
+
+### Width Distribution
+
+* Snippet List: 35–40%
+* Editor: 60–65%
+
+## 3.1 Snippet List
 
 ### Purpose
 
-Navigation only. No clutter.
+Fast scanning and instant access to snippets.
 
-### Contains
-
-* Logo / App name
-* “+ New Snippet” button
-* Snippets (active state)
-
-### Optional (deferred)
-
-* Trash
-
-### ❌ Must NOT include
-
-* Analytics
-* Shared
-* Collections
-* Deploy
-* Any SaaS-style features
-
-## 📄 4.2 Snippet List (Middle — High Priority)
-
-### Purpose
-
-Fast scanning & retrieval
+---
 
 ### Behavior
 
 * Scrollable list
-* Instant search filtering
-* Click = instant load (no page refresh)
+* Real-time search filtering
+* Instant selection (no page reload)
 
 ---
 
@@ -116,156 +85,133 @@ Each item includes:
 Hover:
 
 * Highlight background
-* Show quick actions:
+* Show actions:
 
-  * Copy
+  * Copy (primary)
   * Edit
   * Delete
 
-Active:
+---
 
-* Slight tonal elevation (no borders)
+### Primary UX Rule
+
+> Copy must be possible directly from the list without opening the editor.
 
 ---
 
 ### Density Rule
 
-* Compact spacing (8–12px vertical)
-* Optimized for scanning many items quickly
+* Compact spacing (8–12px)
+* Optimized for high information density
 
-## 🧾 4.3 Editor Panel (Right — Primary Focus)
+## 3.2 Editor Panel
 
 ### Purpose
 
-View + edit code
+View and edit code when needed.
+
+---
 
 ### Layout
 
 ```
-Title + Language + Actions (top)
---------------------------------
-Code Editor (dominant area)
---------------------------------
-Optional metadata (collapsed/hidden)
+Title + Language + Actions
+-------------------------
+Code Editor
+-------------------------
+Metadata (optional)
 ```
 
 ---
 
-### Requirements
+### Constraints
 
-* Code editor takes **80–90% width**
-* Syntax highlighting (future-ready)
-* Monospace font
-
----
-
-### Top Bar
-
-Contains:
-
-* Snippet title (editable)
-* Language tag
-* Actions:
-
-  * Copy
-  * Save
+* Code editor dominates visual space
+* Metadata hidden by default
+* Minimal UI chrome
 
 ---
 
-### ❌ Must NOT include
+### Top Bar Actions
 
-* Analytics tabs
-* Versioning UI (MVP)
-* Heavy metadata panels
+* Copy (primary)
+* Save
 
 ---
 
-### Metadata Handling
+### Rule
 
-* Hidden by default
-* Accessible via icon or drawer
-* Includes:
+> Editor must never slow down the copy workflow.
 
-  * Description
-  * Tags (future)
+## 4. Interaction Patterns
 
-# ✍️ 5. Create Snippet Flow
+### Create Snippet (UI)
 
-## Trigger
+* Trigger: button
+* Pattern: modal
 
-* “+ New Snippet” button
-* Keyboard shortcut (future)
+---
 
-## UI Pattern
-
-Modal (centered, fast interaction)
-
-## Layout
+### Layout
 
 * Title input
-* Language dropdown
-* Code editor (large)
+* Language select
+* Code editor
 * Optional description
 
-## UX Optimization
+---
+
+### UX Rules
 
 * Auto-focus on code field
 * Allow paste-first workflow
 * Minimal required fields
 
-## Actions
+---
 
-* Primary: Create Snippet
-* Secondary: Cancel
+### Search (UI Behavior)
 
-# 🔍 6. Search System
+* Always visible
+* Real-time filtering
+* No submit button
 
-## Behavior
+## 5. Copy Experience (Critical)
 
-* Always visible (top of snippet list)
-* Real-time filtering (no submit button)
+### Requirements
 
-## Search Scope
+* Copy action must be available:
 
-* Title
-* Code content
-* Language
+  * In snippet list (hover)
+  * In editor (top bar)
 
-## States
+---
 
-* Empty state
-* No results state
+### Feedback
 
-# ⚡ 7. Key UX Flows
+* Instant visual confirmation (toast or icon change)
+* No blocking UI
 
-## 🔁 Retrieve Snippet
+---
 
-1. Focus search
-2. Type query
-3. Click result
-4. Copy
+### Performance
 
-⏱ Target: < 5 seconds
+* Copy must feel instantaneous (<100ms)
 
-## ➕ Create Snippet
+## 6. Visual System
 
-1. Click “New Snippet”
-2. Paste code
-3. Add title
-4. Save
+### Design Direction
 
-⏱ Target: < 15 seconds
+* Dark-first UI
+* Minimal and modern
+* Focus on readability
 
-# 🎨 8. Visual Design System
+---
 
-## Color System
-
-### Base
+### Colors
 
 * Background: #0a0e14
-* Surface Low: #0e141c
 * Surface: #121a25
-* Surface High: #1a2637
+* Elevated Surface: #1a2637
 
 ---
 
@@ -279,45 +225,35 @@ Modal (centered, fast interaction)
 ### Accent
 
 * Primary: #acc7ff
-* Accent: #52b15b
+* Success (copy feedback): #52b15b
 
-## Rules
+---
 
-### “No-Line Rule”
+### Rules
 
 * No hard borders
-* Use tonal contrast for separation
+* Use contrast for separation
+* Minimal shadows only for modals
 
 ---
 
-### Elevation
-
-* Use layered backgrounds
-* Minimal soft shadows only for modals
-
----
-
-### Density
-
-* Compact layout
-* Avoid excessive padding
-
-# 🔤 9. Typography
+## 7. Typography
 
 * UI Font: Inter / Public Sans
 * Code Font: JetBrains Mono
 
-## Usage
+---
+
+### Usage
 
 * Titles: medium weight
-* Metadata: small, muted
+* Metadata: small and muted
 * Code: monospace only
 
-# 🧩 10. Component System
+## 8. Component System
 
-## Core Components
+### Core Components
 
-* Sidebar
 * Snippet List
 * Snippet Item
 * Code Editor
@@ -325,47 +261,30 @@ Modal (centered, fast interaction)
 * Search Bar
 * Action Buttons
 
-## Interaction Rules
+---
 
-* Hover = subtle background shift
+### Interaction Rules
+
+* Hover = subtle feedback
 * Click = instant response
-* No heavy animations
+* Avoid heavy animations
 
-# 🚫 11. Explicit Non-Goals (MVP)
+## 9. Explicit Non-Goals
 
-Do NOT implement:
+Do NOT include:
 
 * Analytics dashboards
 * Collaboration features
 * Snippet sharing
 * Version control UI
-* Folder systems
-* Complex tagging UI
+* Complex tagging systems
 
-# 🚀 12. Future Enhancements
+## 10. Design Intent Summary
 
-* Syntax highlighting
-* Tags
-* Keyboard shortcuts (⌘ K)
-* Snippet sharing
-* Folder organization
-* AI suggestions
+The product should feel like:
 
-# ✅ 13. Final Design Intent
+> A fast, minimal developer tool focused on instant code retrieval and copying.
 
-This product should feel like:
+### Guiding Principle
 
-> A **fast, quiet, developer tool** — not a SaaS platform
-
-## Experience Goals
-
-* Open app → instantly usable
-* Search → instant results
-* Copy → 1 click
-* Create → frictionless
-
-## Guiding Principle
-
-> If a feature slows the user down, it should not exist.
-
-# 📌 End of Specification
+If a feature slows down finding or copying code, it should not exist.
