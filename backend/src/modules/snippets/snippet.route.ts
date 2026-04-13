@@ -3,6 +3,7 @@ import {
   createSnippet,
   getSnippetById,
   getAllSnippets,
+  deleteSnippet,
 } from './snippet.controller.js';
 import authMiddleware from '../../middlewares/auth.middleware.js';
 
@@ -18,5 +19,8 @@ snippetRouter.get('/:id', getSnippetById);
 
 // ? Get All snippets of user
 snippetRouter.get('/', getAllSnippets);
+
+// ? Delete snippet route
+snippetRouter.delete('/:id', deleteSnippet);
 
 export default snippetRouter;
