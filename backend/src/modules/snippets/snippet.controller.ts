@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import { snippetService } from './snippet.service.js';
 import { AuthRequest } from '../../middlewares/auth.middleware.js';
@@ -21,12 +21,29 @@ export const createSnippet = asyncHandler(
   },
 );
 
-export const getSnippetById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const snippet = await snippetService.getSnippetById(id as string);
+export const getSnippetById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const snippet = await snippetService.getSnippetById(id as string);
 
-  res.status(200).json({
-    success: true,
-    data: snippet,
-  });
-});
+    res.status(200).json({
+      success: true,
+      data: snippet,
+    });
+  },
+);
+
+export const getAllSnippets = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    if (!req.userId) {
+      throw new UnauthorizedError('Unauthorized');
+    }
+
+    const snippets = await snippetService.getAllSnippets(req.userId);
+
+    res.status(200).json({
+      success: true,
+      data: snippets,
+    });
+  },
+);

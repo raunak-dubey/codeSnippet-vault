@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import snippetModel from './snippet.model.js';
 import { CreateSnippetInput } from '@repo/shared';
+import { isValidObjectId } from '../../utils/isValid.js';
 
 export const snippetService = {
   async createSnippet(userId: string, data: CreateSnippetInput) {
@@ -8,9 +9,16 @@ export const snippetService = {
   },
 
   async getSnippetById(id: string) {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new Error('Invalid snippet ID');
-    }
+    isValidObjectId(id, 'Invalid snippet ID');
     return snippetModel.findById(id);
+  },
+
+  async getAllSnippets(userId: string) {
+    isValidObjectId(userId, 'Invalid user ID');
+
+    const snippets = await snippetModel.find({
+      userId: new Types.ObjectId(userId),
+    });
+    return snippets;
   },
 };
