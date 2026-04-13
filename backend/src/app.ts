@@ -3,6 +3,7 @@ import { errorHandler } from './middlewares/errorHandler.middleware.js';
 import authRouter from './modules/auth/auth.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import snippetRouter from './modules/snippets/snippet.route.js';
 
 const app: Express = express();
 
@@ -18,6 +19,7 @@ app.use(
 
 // Routes
 app.use('/auth', authRouter);
+app.use('/snippets', snippetRouter);
 
 app.use(errorHandler);
 

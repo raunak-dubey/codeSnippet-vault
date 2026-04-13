@@ -46,7 +46,7 @@ Database (MongoDB - Mongoose)
 
    * extracts userId from token
    * queries snippets collection
-   * applies filters on title, code, language
+   * applies filters on title, code, programmingLanguage
 5. Matching results returned
 6. UI updates instantly without page reload
 
@@ -216,7 +216,7 @@ Chosen for flexibility and fast development iteration.
 * userId (reference to user)
 * title
 * code
-* language
+* programmingLanguage
 * description
 * timestamps
 
@@ -241,7 +241,7 @@ Recommended indexes:
 
 * `userId`
 * `title`
-* `language`
+* `programmingLanguage`
 
 For advanced search:
 

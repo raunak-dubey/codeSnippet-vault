@@ -12,12 +12,12 @@ export const createSnippetSchema = z.object({
     .min(1, 'Code is required.')
     .max(10000, 'Code must be at most 10000 characters'),
 
-  language: z
+  programmingLanguage: z
     .string()
     .trim()
     .toLowerCase()
-    .min(1, 'Language is required.')
-    .max(30, 'Language is too long'),
+    .min(1, 'Programming language is required.')
+    .max(30, 'Programming language is too long'),
 
   description: z.string().trim().min(1).max(500).optional(),
 

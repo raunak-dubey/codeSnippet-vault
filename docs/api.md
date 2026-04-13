@@ -112,7 +112,7 @@ Authorization: Bearer <accessToken>
   {
     "id": "string",
     "title": "string",
-    "language": "string",
+    "programmingLanguage": "string",
     "createdAt": "date",
     "updatedAt": "date"
   }
@@ -138,7 +138,7 @@ Authorization: Bearer <accessToken>
   "id": "string",
   "title": "string",
   "code": "string",
-  "language": "string",
+  "programmingLanguage": "string",
   "description": "string",
   "createdAt": "date",
   "updatedAt": "date"
@@ -167,7 +167,7 @@ Authorization: Bearer <accessToken>
 {
   "title": "string",
   "code": "string",
-  "language": "string",
+  "programmingLanguage": "string",
   "description": "string"
 }
 ```
@@ -179,7 +179,7 @@ Authorization: Bearer <accessToken>
   "id": "string",
   "title": "string",
   "code": "string",
-  "language": "string",
+  "programmingLanguage": "string",
   "description": "string",
   "createdAt": "date",
   "updatedAt": "date"
@@ -208,7 +208,7 @@ Authorization: Bearer <accessToken>
 {
   "title": "string",
   "code": "string",
-  "language": "string",
+  "programmingLanguage": "string",
   "description": "string"
 }
 ```
@@ -269,7 +269,7 @@ Authorization: Bearer <accessToken>
   {
     "id": "string",
     "title": "string",
-    "language": "string",
+    "programmingLanguage": "string",
     "createdAt": "date",
     "updatedAt": "date"
   }

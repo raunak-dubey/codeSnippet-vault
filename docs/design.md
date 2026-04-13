@@ -115,7 +115,7 @@ View and edit code when needed.
 ### Layout
 
 ```
-Title + Language + Actions
+Title + programmingLanguage + Actions
 -------------------------
 Code Editor
 -------------------------
@@ -155,7 +155,7 @@ Metadata (optional)
 ### Layout
 
 * Title input
-* Language select
+* programmingLanguage select
 * Code editor
 * Optional description
 

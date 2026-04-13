@@ -20,3 +20,13 @@ export const createSnippet = asyncHandler(
     });
   },
 );
+
+export const getSnippetById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const snippet = await snippetService.getSnippetById(id as string);
+
+  res.status(200).json({
+    success: true,
+    data: snippet,
+  });
+});

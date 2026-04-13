@@ -4,7 +4,7 @@ export interface ISnippet {
   userId: Types.ObjectId;
   title: string;
   code: string;
-  language: string;
+  programmingLanguage: string;
   description?: string;
   tags?: string[];
   visibility: 'private' | 'public';
@@ -33,7 +33,7 @@ const snippetSchema = new Schema<ISnippet>(
       required: true,
     },
 
-    language: {
+    programmingLanguage: {
       type: String,
       required: true,
     },
@@ -50,7 +50,7 @@ const snippetSchema = new Schema<ISnippet>(
 );
 
 snippetSchema.index({ title: 'text', code: 'text' });
-snippetSchema.index({ language: 1 });
+snippetSchema.index({ programmingLanguage: 'text' });
 
 const snippetModel = model<ISnippet>('Snippet', snippetSchema);
 export default snippetModel;

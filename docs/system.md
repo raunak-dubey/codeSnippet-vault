@@ -48,7 +48,7 @@ Each snippet is linked to a specific user.
 - Users can view all their snippets
 - Each snippet displays:
   - title
-  - language
+  - programmingLanguage
   - created date
 - Users can only access their own data
 
@@ -70,7 +70,7 @@ Each snippet is linked to a specific user.
 - Users can search snippets by:
   - title
   - code content
-  - language
+  - programmingLanguage
 - Results are filtered dynamically in real time
 
 ---
@@ -92,7 +92,7 @@ Each snippet is linked to a specific user.
 1. User initiates snippet creation
 2. Inputs code (primary action)
 3. Adds title and optional description
-4. Selects language
+4. Selects programmingLanguage
 5. Saves snippet
 
 Target time: < 15 seconds
@@ -129,7 +129,7 @@ Target time: < 5 seconds
   "userId": "string",
   "title": "string",
   "code": "string",
-  "language": "string",
+  "programmingLanguage": "string",
   "description": "string",
   "createdAt": "date",
   "updatedAt": "date"
