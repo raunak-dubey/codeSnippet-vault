@@ -9,6 +9,15 @@ export const snippetService = {
     return snippetModel.create({ userId: new Types.ObjectId(userId), ...data });
   },
 
+  async getAllSnippets(userId: string) {
+    isValidObjectId(userId, 'Invalid user ID');
+
+    const snippets = await snippetModel.find({
+      userId: new Types.ObjectId(userId),
+    });
+    return snippets;
+  },
+
   async getSnippetById(userId: string, id: string) {
     isValidObjectId(id, 'Invalid snippet ID');
     const snippet = await snippetModel.findOne({
@@ -22,13 +31,23 @@ export const snippetService = {
     return snippet;
   },
 
-  async getAllSnippets(userId: string) {
+  async updateSnippet(userId: string, id: string, data: CreateSnippetInput) {
+    isValidObjectId(id, 'Invalid snippet ID');
     isValidObjectId(userId, 'Invalid user ID');
 
-    const snippets = await snippetModel.find({
+    const snippet = await snippetModel.findOne({
+      _id: new Types.ObjectId(id),
       userId: new Types.ObjectId(userId),
     });
-    return snippets;
+
+    if (!snippet) {
+      throw new NotFoundError('Snippet not found');
+    }
+
+    snippet.set(data);
+    await snippet.save();
+
+    return snippet;
   },
 
   async deleteSnippet(userId: string, id: string) {
