@@ -1,93 +1,55 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import { snippetService } from './snippet.service.js';
-import { AuthRequest } from '../../middlewares/auth.middleware.js';
-import { createSnippetSchema, CreateSnippetInput } from '@repo/shared';
-import { UnauthorizedError } from '../../utils/AppError.js';
+import { createSnippetSchema, searchSnippetSchema } from '@repo/shared';
+import { sendRes } from '../../utils/sendRes.js';
 
 export const createSnippet = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    if (!req.userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
-
-    const data: CreateSnippetInput = createSnippetSchema.parse(req.body);
+  async (req: Request, res: Response) => {
+    const data = createSnippetSchema.parse(req.body);
     const snippet = await snippetService.createSnippet(req.userId, data);
 
-    res.status(201).json({
-      success: true,
-      data: snippet,
-    });
+    sendRes(res, snippet, 201);
   },
 );
 
 export const getAllSnippets = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    if (!req.userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
-
+  async (req: Request, res: Response) => {
     const snippets = await snippetService.getAllSnippets(req.userId);
+    sendRes(res, snippets);
+  },
+);
 
-    res.status(200).json({
-      success: true,
-      data: snippets,
-    });
+export const searchSnippets = asyncHandler(
+  async (req: Request, res: Response) => {
+    const data = searchSnippetSchema.parse(req.query);
+    const snippets = await snippetService.searchSnippets(req.userId, data);
+    sendRes(res, snippets);
   },
 );
 
 export const getSnippetById = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    if (!req.userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
-
-    const { id } = req.params;
-    const snippet = await snippetService.getSnippetById(
-      req.userId,
-      id as string,
-    );
-
-    res.status(200).json({
-      success: true,
-      data: snippet,
-    });
+  async (req: Request, res: Response) => {
+    const id = String(req.params.id);
+    const snippet = await snippetService.getSnippetById(req.userId, id);
+    sendRes(res, snippet);
   },
 );
 
 export const updateSnippet = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    if (!req.userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
+  async (req: Request, res: Response) => {
+    const id = String(req.params.id);
 
-    const { id } = req.params;
-    const data: CreateSnippetInput = createSnippetSchema.parse(req.body);
-    const snippet = await snippetService.updateSnippet(
-      req.userId,
-      id as string,
-      data,
-    );
-
-    res.status(200).json({
-      success: true,
-      data: snippet,
-    });
+    const data = createSnippetSchema.parse(req.body);
+    const snippet = await snippetService.updateSnippet(req.userId, id, data);
+    sendRes(res, snippet);
   },
 );
 
 export const deleteSnippet = asyncHandler(
-  async (req: AuthRequest, res: Response) => {
-    if (!req.userId) {
-      throw new UnauthorizedError('Unauthorized');
-    }
-
-    const { id } = req.params;
-    await snippetService.deleteSnippet(req.userId, id as string);
-
-    res.status(200).json({
-      success: true,
-      data: null,
-    });
+  async (req: Request, res: Response) => {
+    const id = String(req.params.id);
+    await snippetService.deleteSnippet(req.userId, id);
+    res.status(204).send();
   },
 );

@@ -10,7 +10,6 @@ import {
 import { env } from '../../config/env.js';
 import { userService } from '../user/user.service.js';
 import { UnauthorizedError } from '../../utils/AppError.js';
-import { AuthRequest } from '../../middlewares/auth.middleware.js';
 import { sessionService } from '../session/session.service.js';
 
 export interface CookieRequest extends Request {
@@ -76,7 +75,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // ------ Get user -----------------------
-export const getMe = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const getMe = asyncHandler(async (req: Request, res: Response) => {
   if (!req.userId) {
     throw new UnauthorizedError('Unauthorized');
   }

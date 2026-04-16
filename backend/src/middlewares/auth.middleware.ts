@@ -1,40 +1,32 @@
 import { NextFunction, Request, Response } from 'express';
 import { tokenService } from '../modules/token/token.service.js';
 import { UnauthorizedError } from '../utils/AppError.js';
+import logger from '../config/logger.js';
 
-export interface AuthRequest extends Request {
-  userId?: string;
-}
+const authMiddleware = (req: Request, _res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    throw new UnauthorizedError('Authorization header missing');
+  }
 
-const authMiddleware = (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction,
-) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const [scheme, token] = authHeader.split(' ');
 
-  if (!token) {
-    res.status(401).json({
-      success: false,
-      message: 'Unauthorized',
-    });
-    return;
+  if (scheme !== 'Bearer' || !token) {
+    throw new UnauthorizedError('Invalid authorization format');
   }
 
   try {
     const decoded = tokenService.verifyAccessToken(token);
 
-    if (!decoded.sub) {
-      throw new UnauthorizedError('Invalid token.');
+    if (!decoded?.sub) {
+      throw new UnauthorizedError('Invalid token payload');
     }
 
     req.userId = decoded.sub;
     next();
-  } catch {
-    res.status(401).json({
-      success: false,
-      message: 'Unauthorized',
-    });
+  } catch (error) {
+    logger.error('Auth failed', { error });
+    throw new UnauthorizedError('Invalid or expired token');
   }
 };
 

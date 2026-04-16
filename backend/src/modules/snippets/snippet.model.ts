@@ -49,8 +49,24 @@ const snippetSchema = new Schema<ISnippet>(
   { timestamps: true, versionKey: false },
 );
 
-snippetSchema.index({ title: 'text', code: 'text' });
-snippetSchema.index({ programmingLanguage: 'text' });
+snippetSchema.index(
+  {
+    title: 'text',
+    description: 'text',
+    tags: 'text',
+    programmingLanguage: 'text',
+    code: 'text',
+  },
+  {
+    weights: {
+      title: 5,
+      tags: 4,
+      programmingLanguage: 3,
+      description: 2,
+      code: 1,
+    },
+  },
+);
 
 const snippetModel = model<ISnippet>('Snippet', snippetSchema);
 export default snippetModel;

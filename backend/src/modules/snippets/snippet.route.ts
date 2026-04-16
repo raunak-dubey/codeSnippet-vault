@@ -5,6 +5,7 @@ import {
   getAllSnippets,
   deleteSnippet,
   updateSnippet,
+  searchSnippets,
 } from './snippet.controller.js';
 import authMiddleware from '../../middlewares/auth.middleware.js';
 
@@ -18,11 +19,14 @@ snippetRouter.post('/', createSnippet);
 // ? Get All snippets of user
 snippetRouter.get('/', getAllSnippets);
 
+// ? Search snippets route
+snippetRouter.get('/search', searchSnippets);
+
 // ? Get snippet By id route
 snippetRouter.get('/:id', getSnippetById);
 
 // ? Update snippet route
-snippetRouter.put('/:id', updateSnippet);
+snippetRouter.patch('/:id', updateSnippet);
 
 // ? Delete snippet route
 snippetRouter.delete('/:id', deleteSnippet);
