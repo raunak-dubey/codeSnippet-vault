@@ -14,7 +14,10 @@ type ApiErrorResponse = {
 };
 
 type RefreshResponse = {
-  accessToken: string;
+  success: boolean;
+  data: {
+    accessToken: string;
+  };
 };
 
 // ─── Type Guard ────────────────────────────────────────────────────────
@@ -103,7 +106,7 @@ api.interceptors.response.use(
         const data = await refreshPromise;
         refreshPromise = null;
 
-        setAccessToken(data.accessToken);
+        setAccessToken(data.data.accessToken);
 
         if (!originalRequest.headers) {
           originalRequest.headers = new AxiosHeaders();
@@ -111,7 +114,7 @@ api.interceptors.response.use(
 
         originalRequest.headers.set(
           'Authorization',
-          `Bearer ${data.accessToken}`,
+          `Bearer ${data.data.accessToken}`,
         );
 
         return api(originalRequest);

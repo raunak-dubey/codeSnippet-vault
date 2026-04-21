@@ -43,8 +43,8 @@ export const snippetService = {
 
     const { query: searchText, programmingLanguage, tags, page, limit } = query;
 
-    const _page = Number(page);
-    const _limit = Number(limit);
+    const _page = Number(page) || 1;
+    const _limit = Number(limit) || 10;
     const skip = (_page - 1) * _limit;
 
     const baseFilter: MatchDoc = {

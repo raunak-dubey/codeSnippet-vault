@@ -60,10 +60,10 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   res.cookie('refreshToken', rawRefreshToken, {
     httpOnly: true,
-    secure: env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: true,
+    sameSite: 'none',
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    path: '/auth/refresh',
+    path: '/',
   });
 
   res.status(201).json({
@@ -108,10 +108,10 @@ export const refresh = asyncHandler(
     // set new refresh token cookie
     res.cookie('refreshToken', rawRefreshToken, {
       httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      path: '/auth/refresh',
+      path: '/',
     });
 
     res.status(200).json({
@@ -138,9 +138,9 @@ export const logout = asyncHandler(
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/auth/refresh',
+      secure: true,
+      sameSite: 'none',
+      path: '/',
     });
 
     res.status(200).json({

@@ -1,4 +1,3 @@
-// features/auth/components/AuthGuard.tsx
 'use client';
 
 import { useMe } from '../hooks/useMe';
@@ -12,7 +11,6 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (isLoading) return;
 
-    // ❌ not logged in
     if (isError || !data?.data) {
       void router.replace('/login');
       return;
